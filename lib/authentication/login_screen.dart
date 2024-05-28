@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rental_app/authentication/signup_screen.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
 import '../Screens/home.dart';
 import '../functionalities/auth.dart';
 class LoginScreen extends StatefulWidget {
@@ -21,14 +19,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
      body: SingleChildScrollView(
       child: Padding (
-        padding: const EdgeInsets.all(70) ,
+        padding: const EdgeInsets.all(50) ,
         child:Column(
          children: [
-
-          // Image.asset(
-          //  "assets/images/images_2.jpg" 
-          // ),
-
           const Text(
            'Login as a user',
            style: TextStyle(
@@ -37,16 +30,11 @@ class _LoginScreenState extends State<LoginScreen> {
             color: Colors.black
            ) 
           ),
-          
-          // text field
 
            Padding(
            padding: const EdgeInsets.all(22),
            child: Column(
             children: [
-
-             
-
                TextField(
                 controller: emailTextEditingControler,
                 keyboardType: TextInputType.emailAddress,
@@ -57,8 +45,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Colors.black,
                   ),
                   hintText: "User Email",
-
-
                 ),
                 style: const TextStyle(
                   color: Colors.black,
@@ -66,7 +52,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox( height: 22,),
-
                TextField(
                 controller: passwordTextEditingController,
                 obscureText: true,
@@ -78,8 +63,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Colors.black,
                   ),
                   hintText: "User password",
-
-
                 ),
                 style: const TextStyle(
                   color: Colors.black,
@@ -93,26 +76,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   setState(() {
                     isLoading = true;
                   });
-                  AuthResponse response = await login(emailTextEditingControler.text, passwordTextEditingController.text);
-                  final User? user = response.user;
+                   await supabase.auth.signInWithPassword(email: emailTextEditingControler.text,password:  passwordTextEditingController.text);
                   setState(() {
                     isLoading = false;
                   });
 
-                  if(user == null){
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Invalid Credentials', style: TextStyle(color: Colors.redAccent, fontSize: 17),),),);
-                  }
-                  else {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Login Success', style: TextStyle(color: Colors.greenAccent, fontSize: 17),),),);
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const Home(),),);
-                  }
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Login Success', style: TextStyle(color: Colors.greenAccent, fontSize: 17),),),);
                 }
                 catch(e){
                   setState(() {
                     isLoading = false;
                   });
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Invalid Credentials', style: TextStyle(color: Colors.redAccent, fontSize: 17),),),);
-                  print(e);
                 }
                 },
                 style: ElevatedButton.styleFrom(
@@ -142,22 +118,16 @@ class _LoginScreenState extends State<LoginScreen> {
             onPressed:() 
             {
                Navigator.push(context, MaterialPageRoute(builder: (c)=>const SignUpScreen()));
-              
-
             },
-
             child: const Text(
              "Don't have an Account? Register Here" ,
              style: TextStyle(
               color: Colors.black,
              ),
               ),
-
           ),
          ], 
         ) ,
-
-
       ),
      )
     );

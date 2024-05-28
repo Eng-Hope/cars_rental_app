@@ -37,3 +37,7 @@ Future<bool> saveOrder(
   }
   return isSaved;
 }
+
+Future<List<Map<String, dynamic>>> getPaymentList(String userId) async{
+  return await supabase.from('Orders').select('totalPrice, Date, time, Status, carId, Cars(imageUrl, name, model)').eq('userId', userId);
+}

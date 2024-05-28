@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rental_app/Screens/home.dart';
+import 'package:rental_app/authentication/login_screen.dart';
+import 'package:rental_app/functionalities/auth.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -47,6 +49,10 @@ class _OrderScreenState extends State<OrderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (supabase.auth.currentUser == null) {
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()));
+    }
     return Scaffold(
       appBar: AppBar(title: const Text("Orders Description ",
       

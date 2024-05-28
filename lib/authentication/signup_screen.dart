@@ -180,20 +180,18 @@ class _SignupScreen extends State<SignUpScreen> {
                     setState(() {
                       isLoading = true;
                     });
-               final AuthResponse response = await  signUp(emailTextEditingControler.text, passwordTextEditingController.text);
-                   final User? user = response.user;
-                   print(user);
-                print(emailTextEditingControler.text + passwordTextEditingController.text);
+               await supabase.auth.signUp( email: emailTextEditingControler.text,password: passwordTextEditingController.text);
                  setState(() {
                    isLoading = false;
                  });
-                  print("signed up");
+                 Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginScreen(),),);
+                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Signup with your credentials', style: TextStyle(color: Colors.green),),),);
                   }
                   catch(e){
                     setState(() {
                       isLoading = false;
                     });
-                      print(e);
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('An error has occurred', style: TextStyle(color: Colors.redAccent),),),);
                   }
 
                 },
@@ -202,7 +200,7 @@ class _SignupScreen extends State<SignUpScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 10,)
                 ),
                 child: isLoading? const CircularProgressIndicator(color: Colors.white,): const Text(
-                  "Sign up"
+                  "Sign up", style: TextStyle(color: Colors.black),
 
                 ),
                 ),

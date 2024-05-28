@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rental_app/Screens/car_booking.dart';
 import 'package:rental_app/Screens/home_drawer.dart';
+import 'package:rental_app/authentication/login_screen.dart';
 import 'package:rental_app/functionalities/data.dart';
 
 class CarDescription extends StatelessWidget {
@@ -9,6 +10,10 @@ class CarDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (supabase.auth.currentUser == null) {
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()));
+    }
     final screenWidth = MediaQuery.of(context).size.width;
     final adjustedWidth = screenWidth - 40;
     return Scaffold(

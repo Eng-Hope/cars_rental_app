@@ -1,111 +1,114 @@
 import 'package:flutter/material.dart';
 import 'package:rental_app/Screens/home.dart';
+import 'package:rental_app/Screens/payments.dart';
+import 'package:rental_app/main.dart';
 import '../authentication/login_screen.dart';
 import '../functionalities/auth.dart';
-class HomeDrawer extends StatelessWidget {
+
+class HomeDrawer extends StatefulWidget {
   const HomeDrawer({super.key});
 
   @override
+  State<HomeDrawer> createState() => _HomeDrawerState();
+}
+
+class _HomeDrawerState extends State<HomeDrawer> {
+  bool isLoading = false;
+  @override
   Widget build(BuildContext context) {
-    return  Drawer(
-       child: Column(
-
-        children: <Widget>[
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            color: Theme.of(context).primaryColor,
-            child: Center(
-              child: Column(
-                children: <Widget> [
-                 Container(
-
-                  width:100,
-                  height: 100,
-                  decoration:  const BoxDecoration(
-                    shape: BoxShape.circle,
-                      )
-                      ) 
-                    ,]
-
-
-                 ) 
-          ,) ,)
-
-         , const ListTile(
-          leading: Icon (Icons.person),
-          title: Text(
-            'My account', 
-            style:TextStyle(
-              fontSize:18,),
-              ),
-
-              onTap: null,
-
-         ),
-
-          ListTile(
-          leading: const Icon (Icons.check_box_outline_blank_sharp),
-          title: const Text(
-            'Services', 
-            style:TextStyle(
-              fontSize:18,),
-              ),
-
-              onTap: ()=>{Navigator.push(context, MaterialPageRoute(builder: (c)=>const Home()))
-
-              },
-         ),
-
-          const ListTile(
-          leading: Icon (Icons.wallet),
-          title: Text(
-            'Payments', 
-            style:TextStyle(
-              fontSize:18,),
-              ),
-
-               onTap: null,
-
+    return Drawer(
+        child: ListView(children: <Widget>[
+      UserAccountsDrawerHeader(
+        currentAccountPicture: CircleAvatar(
+          backgroundColor: Colors.orange,
+          child: Text(
+            '${supabase.auth.currentUser?.email?[0]}',
+            style: const TextStyle(
+              fontSize: 30,
+            ),
           ),
-
-          const ListTile(
-          leading: Icon (Icons. lock_clock),
-          title: Text(
-            'My rides', 
-            style:TextStyle(
-              fontSize:18,),
-              ),
-
-              onTap: null,
-    ),
-
-    const ListTile(
-          leading: Icon (Icons.nat ),
-          title: Text(
-            'About', 
-            style:TextStyle(
-              fontSize:18,),
-              ),
-               onTap: null
-    ),
-
+        ),
+        accountName: Text('${supabase.auth.currentUser?.email}'),
+        accountEmail: Text('${supabase.auth.currentUser?.email}'),
+      ),
       ListTile(
-          leading: const Icon (Icons.logout ),
-          title: const Text(
-            'Log Out', 
-            style:TextStyle(
-              fontSize:18,),
-              ),
+        leading: const Icon(Icons.person),
+        title: const Text(
+          'Home',
+          style: TextStyle(
+            fontSize: 18,
+          ),
+        ),
+        onTap: () => {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MyApp(),
+            ),
+          ),
+        },
+      ),
+      ListTile(
+        leading: const Icon(Icons.check_box_outline_blank_sharp),
+        title: const Text(
+          'Services',
+          style: TextStyle(
+            fontSize: 18,
+          ),
+        ),
+        onTap: () => {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (c) => const Home()))
+        },
+      ),
+      ListTile(
+        leading: const Icon(Icons.wallet),
+        title: const Text(
+          'Payments',
+          style: TextStyle(
+            fontSize: 18,
+          ),
+        ),
+        onTap: () => {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const Payments(),
+            ),
+          ),
+        },
+      ),
+      ListTile(
+          leading: const Icon(Icons.logout),
+          title: isLoading
+              ? const Center(child: CircularProgressIndicator(color: Colors.black12, strokeWidth: 15,))
+              : const Text(
+                  'Log Out',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+          onTap: () async {
+            try{
+              setState(() {
+                isLoading = true;
+              });
+              await supabase.auth.signOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (c) => const LoginScreen(),
+                ),
+              );
+            }
+            catch(e){
+              print(e);
+              setState(() {
+                isLoading = false;
+              });
+            }
 
-               onTap: () async{
-                    supabase.auth.signOut();
-                    Navigator.push(context, MaterialPageRoute(builder: (c)=>const LoginScreen()));
-               }
-     )
-               
-    ]
-    )
-    );
+          }),
+    ]));
   }
 }
