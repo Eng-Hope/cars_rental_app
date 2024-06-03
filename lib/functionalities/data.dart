@@ -2,8 +2,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 final supabase = Supabase.instance.client;
 
-Future<List<Map<String, dynamic>>> allAvailableCars() async {
-  return await supabase.from('Cars').select().eq('status', 'Available');
+Future<List<Map<String, dynamic>>> allAvailableCars(String name) async {
+  return await supabase.from('Cars')
+      .select()
+      .eq('status', 'Available')
+      .or('name.ilike.%$name%,model.ilike.%$name%');
+
 }
 
 Future<Map<String, dynamic>> getCar(String id) async {
