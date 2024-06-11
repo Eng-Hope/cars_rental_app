@@ -44,7 +44,7 @@ class _HomeState extends State<Home> {
                    });
                  },
                   decoration: InputDecoration(
-                    hintText: 'Search for rooms',
+                    hintText: 'Search for cars',
                     hintStyle: const TextStyle(fontSize: 17),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),

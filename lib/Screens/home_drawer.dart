@@ -49,19 +49,6 @@ class _HomeDrawerState extends State<HomeDrawer> {
         },
       ),
       ListTile(
-        leading: const Icon(Icons.check_box_outline_blank_sharp),
-        title: const Text(
-          'Services',
-          style: TextStyle(
-            fontSize: 18,
-          ),
-        ),
-        onTap: () => {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (c) => const Home()))
-        },
-      ),
-      ListTile(
         leading: const Icon(Icons.wallet),
         title: const Text(
           'Payments',
